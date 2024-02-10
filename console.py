@@ -14,20 +14,20 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
     def do_EOF(self, line):
-        """Quits command interpreter with ctrl+d
+        """exit command interpreter with ctrl+d
 
         Args:
-           line(args): input argument for quiting
+           line(args): input argument to exit
            the terminal
 
         """
         return True
 
-    def do_quit(self, line):
-        """Handles the 'quit' command
+    def do_exit(self, line):
+        """Handles the 'exit' command
 
         Args:
-            line(args): input argument for quiting
+            line(args): input argument to exit
             the terminal
 
         """
