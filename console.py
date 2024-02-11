@@ -23,8 +23,8 @@ class HBNBCommand(cmd.Cmd):
         """
         return True
 
-    def do_exit(self, line):
-        """Handles the 'exit' command
+    def do_quit(self, line):
+        """Handles the 'quit' command
 
         Args:
             line(args): input argument to exit
