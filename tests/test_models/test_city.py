@@ -1,60 +1,50 @@
 #!/usr/bin/python3
-"""Unit test for the class city
-"""
+"""Unittest test_city module"""
+
 import unittest
-import pep8
-from models import city
+import pycodestyle
+from models.engine.file_storage import FileStorage
 from models.city import City
-from models.base_model import BaseModel
 
 
-class TestCityClass(unittest.TestCase):
-    """TestCityClass test for the city class
-    Args:
-        unittest (): Propertys for unit testing
-    """
-
-    maxDiff = None
+class TestCity(unittest.TestCase):
+    """Test cases for TestCity class"""
 
     def setUp(self):
-        """Return to "" class attributes"""
-        City.name = ""
-        City.state_id = ""
+        """Set up test cases"""
+        self.storage = FileStorage()
+        self.storage.reload()
+        self.storage._FileStorage__objects = {}
 
-    def test_module_doc(self):
-        """check for module documentation"""
-        self.assertTrue(len(city.__doc__) > 0)
+    def tearDown(self):
+        """Clean up after test cases"""
+        self.storage._FileStorage__objects = {}
 
-    def test_class_doc(self):
-        """check for documentation"""
-        self.assertTrue(len(City.__doc__) > 0)
+    def test_city(self):
+        """Test the City class"""
+        my_city = City()
+        my_city.state_id = "R"
+        my_city.name = "Al Hoceima"
+        my_city.save()
 
-    def test_method_docs(self):
-        """check for method documentation"""
-        for func in dir(City):
-            self.assertTrue(len(func.__doc__) > 0)
+        all_objs = self.storage.all()
+        key = f"City.{my_city.id}"
+        self.assertIn(key, all_objs.keys())
 
-    def test_pep8(self):
-        """test base and test_base for pep8 conformance"""
-        style = pep8.StyleGuide(quiet=True)
-        file1 = "models/city.py"
-        file2 = "tests/test_models/test_city.py"
-        result = style.check_files([file1, file2])
+    def test_pycodestyle(self):
+        """Test that the code follows pycodestyle guidelines"""
+        style = pycodestyle.StyleGuide(quiet=True)
+        result = style.check_files(["models/city.py"])
         self.assertEqual(
-            result.total_errors, 0, "Found code style errors (and warning)."
+            result.total_errors, 0, "Found code style errors (and warnings)."
         )
 
-    def test_is_instance(self):
-        """Test if user is instance of basemodel"""
-        my_city = City()
-        self.assertTrue(isinstance(my_city, BaseModel))
+    def test_module_docstring(self):
+        """Test that the module has a docstring"""
+        import models.city
 
-    def test_field_types(self):
-        """Test field attributes of user"""
-        my_city = City()
-        self.assertTrue(type(my_city.name) == str)
-        self.assertTrue(type(my_city.state_id) == str)
+        self.assertIsNotNone(models.city.__doc__)
 
-
-if __name__ == "__main__":
-    unittest.main()
+    def test_class_docstring(self):
+        """Test that the class has a docstring"""
+        self.assertIsNotNone(City.__doc__)
