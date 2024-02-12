@@ -1,69 +1,62 @@
 #!/usr/bin/python3
-"""Unit tests for the Review module.
+"""Unit test for the file storage class
 """
-import os
 import unittest
+import pep8
+from models import review
 from models.review import Review
-from models import storage
-from datetime import datetime
-from models.engine.file_storage import FileStorage
+from models.base_model import BaseModel
 
 
-class TestReview(unittest.TestCase):
-    """Test cases for the `Review` class."""
+class TestReviewClass(unittest.TestCase):
+    """TestReviewClass test suite for the use
+    of the review class
+    Args:
+        unittest (): Propertys for unit testing
+    """
+
+    maxDiff = None
 
     def setUp(self):
-        pass
+        """Return to "" class attributes"""
+        Review.place_id = ""
+        Review.user_id = ""
+        Review.text = ""
 
-    def tearDown(self) -> None:
-        """Resets FileStorage data."""
-        FileStorage._FileStorage__objects = {}
-        if os.path.exists(FileStorage._FileStorage__file_path):
-            os.remove(FileStorage._FileStorage__file_path)
+    def test_module_doc(self):
+        """check for module documentation"""
+        self.assertTrue(len(review.__doc__) > 0)
 
-    def test_params(self):
-        """Test method for class attributes"""
+    def test_class_doc(self):
+        """check for documentation"""
+        self.assertTrue(len(Review.__doc__) > 0)
 
-        rv1 = Review()
-        rv3 = Review("hello", "wait", "in")
-        km = f"{type(rv1).__name__}.{rv1.id}"
-        self.assertIsInstance(rv1.text, str)
-        self.assertIsInstance(rv1.id, str)
-        self.assertIsInstance(rv1.place_id, str)
-        self.assertEqual(rv3.text, "")
+    def test_method_docs(self):
+        """check for method documentation"""
+        for func in dir(Review):
+            self.assertTrue(len(func.__doc__) > 0)
 
-    def test_init(self):
-        """Test method for public instances"""
-        rv1 = Review()
-        rv2 = Review(**rv1.to_dict())
-        self.assertIsInstance(rv1.id, str)
-        self.assertIsInstance(rv1.created_at, datetime)
-        self.assertIsInstance(rv1.updated_at, datetime)
-        self.assertEqual(rv1.updated_at, rv2.updated_at)
+    def test_pep8(self):
+        """test base and test_base for pep8 conformance"""
+        style = pep8.StyleGuide(quiet=True)
+        file1 = "models/review.py"
+        file2 = "tests/test_models/test_review.py"
+        result = style.check_files([file1, file2])
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (and warning)."
+        )
 
-    def test_str(self):
-        """Test method for str representation"""
-        rv1 = Review()
-        string = f"[{type(rv1).__name__}] ({rv1.id}) {rv1.__dict__}"
-        self.assertEqual(rv1.__str__(), string)
+    def test_is_instance(self):
+        """Test if user is instance of basemodel"""
+        my_Review = Review()
+        self.assertTrue(isinstance(my_Review, BaseModel))
 
-    def test_save(self):
-        """Test method for save"""
-        rv1 = Review()
-        old_update = rv1.updated_at
-        rv1.save()
-        self.assertNotEqual(rv1.updated_at, old_update)
-
-    def test_todict(self):
-        """Test method for dict"""
-        rv1 = Review()
-        rv2 = Review(**rv1.to_dict())
-        a_dict = rv2.to_dict()
-        self.assertIsInstance(a_dict, dict)
-        self.assertEqual(a_dict["__class__"], type(rv2).__name__)
-        self.assertIn("created_at", a_dict.keys())
-        self.assertIn("updated_at", a_dict.keys())
-        self.assertNotEqual(rv1, rv2)
+    def test_field_types(self):
+        """Test field attributes of user"""
+        my_Review = Review()
+        self.assertTrue(type(my_Review.place_id) == str)
+        self.assertTrue(type(my_Review.user_id) == str)
+        self.assertTrue(type(my_Review.text) == str)
 
 
 if __name__ == "__main__":

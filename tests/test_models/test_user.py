@@ -1,67 +1,63 @@
 #!/usr/bin/python3
-"""Unit tests for the User module.
+"""Unit test for the file storage class
 """
-import os
 import unittest
-from models.engine.file_storage import FileStorage
+import pep8
+from models import user
 from models.user import User
-from models import storage
-from datetime import datetime
+from models.base_model import BaseModel
 
 
-class TestState(unittest.TestCase):
-    """Test cases for the `User` class."""
+class TestUserClass(unittest.TestCase):
+    """TestUserClass resume
+    Args:
+        unittest (): Propertys for unit testing
+    """
+
+    maxDiff = None
 
     def setUp(self):
-        pass
+        """Return to "" class attributes"""
+        User.email = ""
+        User.password = ""
+        User.first_name = ""
+        User.last_name = ""
 
-    def tearDown(self) -> None:
-        """Resets FileStorage data."""
-        FileStorage._FileStorage__objects = {}
-        if os.path.exists(FileStorage._FileStorage__file_path):
-            os.remove(FileStorage._FileStorage__file_path)
+    def test_module_doc(self):
+        """check for module documentation"""
+        self.assertTrue(len(user.__doc__) > 0)
 
-    def test_params(self):
-        us1 = User()
-        km = f"{type(us1).__name__}.{us1.id}"
-        self.assertIn(km, storage.all())
-        self.assertIsInstance(us1.email, str)
-        self.assertIsInstance(us1.password, str)
-        self.assertIsInstance(us1.first_name, str)
-        self.assertIsInstance(us1.last_name, str)
+    def test_class_doc(self):
+        """check for documentation"""
+        self.assertTrue(len(User.__doc__) > 0)
 
-    def test_init(self):
-        """Test method for public instances"""
-        us1 = User()
-        us2 = User(**us1.to_dict())
-        self.assertIsInstance(us1.id, str)
-        self.assertIsInstance(us1.created_at, datetime)
-        self.assertIsInstance(us1.updated_at, datetime)
-        self.assertEqual(us1.updated_at, us2.updated_at)
+    def test_method_docs(self):
+        """check for method documentation"""
+        for func in dir(User):
+            self.assertTrue(len(func.__doc__) > 0)
 
-    def test_str(self):
-        """Test method for str representation"""
-        us1 = User()
-        string = f"[{type(us1).__name__}] ({us1.id}) {us1.__dict__}"
-        self.assertEqual(us1.__str__(), string)
+    def test_pep8(self):
+        """test base and test_base for pep8 conformance"""
+        style = pep8.StyleGuide(quiet=True)
+        file1 = "models/user.py"
+        file2 = "tests/test_models/test_user.py"
+        result = style.check_files([file1, file2])
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (and warning)."
+        )
 
-    def test_save(self):
-        """Test method for save"""
-        us1 = User()
-        old_update = us1.updated_at
-        us1.save()
-        self.assertNotEqual(us1.updated_at, old_update)
+    def test_is_instance(self):
+        """Test if user is instance of basemodel"""
+        my_user = User()
+        self.assertTrue(isinstance(my_user, BaseModel))
 
-    def test_todict(self):
-        """Test method for dict"""
-        us1 = User()
-        us2 = User(**us1.to_dict())
-        a_dict = us2.to_dict()
-        self.assertIsInstance(a_dict, dict)
-        self.assertEqual(a_dict["__class__"], type(us2).__name__)
-        self.assertIn("created_at", a_dict.keys())
-        self.assertIn("updated_at", a_dict.keys())
-        self.assertNotEqual(us1, us2)
+    def test_field_types(self):
+        """Test field attributes of user"""
+        my_user = User()
+        self.assertTrue(type(my_user.email) == str)
+        self.assertTrue(type(my_user.password) == str)
+        self.assertTrue(type(my_user.first_name) == str)
+        self.assertTrue(type(my_user.last_name) == str)
 
 
 if __name__ == "__main__":

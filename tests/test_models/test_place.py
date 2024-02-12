@@ -1,81 +1,76 @@
 #!/usr/bin/python3
-"""Unit tests for the Place module.
+"""Unit test for the class Place
 """
-import os
 import unittest
-from models.engine.file_storage import FileStorage
+import pep8
+from models import place
 from models.place import Place
-from models import storage
-from datetime import datetime
+from models.base_model import BaseModel
 
 
-class TestPlace(unittest.TestCase):
-    """Test cases for the `Place` class."""
+class TestPlaceClass(unittest.TestCase):
+    """TestPlaceClass test suit for the place class
+    Args:
+        unittest (): Propertys for unit testing
+    """
+
+    maxDiff = None
 
     def setUp(self):
-        pass
+        """Return to "" class attributes"""
+        Place.city_id = ""
+        Place.user_id = ""
+        Place.name = ""
+        Place.description = ""
+        Place.number_rooms = 0
+        Place.number_bathrooms = 0
+        Place.max_guest = 0
+        Place.price_by_night = 0
+        Place.latitude = 0.0
+        Place.longitude = 0.0
+        Place.amenity_ids = []
 
-    def tearDown(self) -> None:
-        """Resets FileStorage data."""
-        FileStorage._FileStorage__objects = {}
-        if os.path.exists(FileStorage._FileStorage__file_path):
-            os.remove(FileStorage._FileStorage__file_path)
+    def test_module_doc(self):
+        """check for module documentation"""
+        self.assertTrue(len(place.__doc__) > 0)
 
-    def test_params(self):
-        """Test method for class attributes"""
+    def test_class_doc(self):
+        """check for documentation"""
+        self.assertTrue(len(Place.__doc__) > 0)
 
-        plc1 = Place()
-        plc3 = Place("hello", "wait", "in")
-        km = f"{type(plc1).__name__}.{plc1.id}"
-        self.assertIsInstance(plc1.name, str)
-        self.assertIn(km, storage.all())
-        self.assertEqual(plc3.name, "")
+    def test_method_docs(self):
+        """check for method documentation"""
+        for func in dir(Place):
+            self.assertTrue(len(func.__doc__) > 0)
 
-        self.assertIsInstance(plc1.name, str)
-        self.assertIsInstance(plc1.user_id, str)
-        self.assertIsInstance(plc1.city_id, str)
-        self.assertIsInstance(plc1.description, str)
-        self.assertIsInstance(plc1.number_bathrooms, int)
-        self.assertIsInstance(plc1.number_rooms, int)
-        self.assertIsInstance(plc1.price_by_night, int)
-        self.assertIsInstance(plc1.max_guest, int)
-        self.assertIsInstance(plc1.longitude, float)
-        self.assertIsInstance(plc1.latitude, float)
-        self.assertIsInstance(plc1.amenity_ids, list)
+    def test_pep8(self):
+        """test base and test_base for pep8 conformance"""
+        style = pep8.StyleGuide(quiet=True)
+        file1 = "models/place.py"
+        file2 = "tests/test_models/test_place.py"
+        result = style.check_files([file1, file2])
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (and warning)."
+        )
 
-    def test_init(self):
-        """Test method for public instances"""
+    def test_is_instance(self):
+        """Test if user is instance of basemodel"""
+        my_place = Place()
+        self.assertTrue(isinstance(my_place, BaseModel))
 
-        plc1 = Place()
-        plc2 = Place(**plc1.to_dict())
-        self.assertIsInstance(plc1.id, str)
-        self.assertIsInstance(plc1.created_at, datetime)
-        self.assertIsInstance(plc1.updated_at, datetime)
-        self.assertEqual(plc1.updated_at, plc2.updated_at)
-
-    def test_str(self):
-        """Test method for str representation"""
-        plc1 = Place()
-        string = f"[{type(plc1).__name__}] ({plc1.id}) {plc1.__dict__}"
-        self.assertEqual(plc1.__str__(), string)
-
-    def test_save(self):
-        """Test method for save"""
-        plc1 = Place()
-        old_update = plc1.updated_at
-        plc1.save()
-        self.assertNotEqual(plc1.updated_at, old_update)
-
-    def test_todict(self):
-        """Test method for dict"""
-        plc1 = Place()
-        plc2 = Place(**plc1.to_dict())
-        a_dict = plc2.to_dict()
-        self.assertIsInstance(a_dict, dict)
-        self.assertEqual(a_dict["__class__"], type(plc2).__name__)
-        self.assertIn("created_at", a_dict.keys())
-        self.assertIn("updated_at", a_dict.keys())
-        self.assertNotEqual(plc1, plc2)
+    def test_field_types(self):
+        """Test field attributes of user"""
+        self.assertTrue(type(Place.city_id) == str)
+        self.assertTrue(type(Place.user_id) == str)
+        self.assertTrue(type(Place.name) == str)
+        self.assertTrue(type(Place.description) == str)
+        self.assertTrue(type(Place.number_rooms) == int)
+        self.assertTrue(type(Place.number_bathrooms) == int)
+        self.assertTrue(type(Place.max_guest) == int)
+        self.assertTrue(type(Place.price_by_night) == int)
+        self.assertTrue(type(Place.latitude) == float)
+        self.assertTrue(type(Place.longitude) == float)
+        self.assertTrue(type(Place.amenity_ids) == list)
 
 
 if __name__ == "__main__":

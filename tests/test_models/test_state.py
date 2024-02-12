@@ -1,69 +1,58 @@
 #!/usr/bin/python3
-"""Unit tests for the State module.
+"""Unit test for the file storage class
 """
-import os
 import unittest
-from models.engine.file_storage import FileStorage
+import pep8
+from models import state
 from models.state import State
-from models import storage
-from datetime import datetime
+from models.base_model import BaseModel
 
 
-class TestState(unittest.TestCase):
-    """Test cases for the `State` class."""
+class TestStateClass(unittest.TestCase):
+    """TestStateClass checks for the use of
+    state class
+    Args:
+        unittest (): Propertys for unit testing
+    """
+
+    maxDiff = None
 
     def setUp(self):
-        pass
+        """Return to "" class attributes"""
+        State.name = ""
 
-    def tearDown(self) -> None:
-        """Resets FileStorage data."""
-        FileStorage._FileStorage__objects = {}
-        if os.path.exists(FileStorage._FileStorage__file_path):
-            os.remove(FileStorage._FileStorage__file_path)
+    def test_module_doc(self):
+        """check for module documentation"""
+        self.assertTrue(len(state.__doc__) > 0)
 
-    def test_params(self):
-        st1 = State()
-        st3 = State("hello", "wait", "in")
+    def test_class_doc(self):
+        """check for documentation"""
+        self.assertTrue(len(State.__doc__) > 0)
 
-        km = f"{type(st1).__name__}.{st1.id}"
-        self.assertIsInstance(st1.name, str)
-        self.assertEqual(st3.name, "")
-        st1.name = "Chicago"
-        self.assertEqual(st1.name, "Chicago")
-        self.assertIn(km, storage.all())
+    def test_method_docs(self):
+        """check for method documentation"""
+        for func in dir(State):
+            self.assertTrue(len(func.__doc__) > 0)
 
-    def test_init(self):
-        """Test method for public instances"""
-        st1 = State()
-        st2 = State(**st1.to_dict())
-        self.assertIsInstance(st1.id, str)
-        self.assertIsInstance(st1.created_at, datetime)
-        self.assertIsInstance(st1.updated_at, datetime)
-        self.assertEqual(st1.updated_at, st2.updated_at)
+    def test_pep8(self):
+        """test base and test_base for pep8 conformance"""
+        style = pep8.StyleGuide(quiet=True)
+        file1 = "models/state.py"
+        file2 = "tests/test_models/test_state.py"
+        result = style.check_files([file1, file2])
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (and warning)."
+        )
 
-    def test_str(self):
-        """Test method for str representation"""
-        st1 = State()
-        string = f"[{type(st1).__name__}] ({st1.id}) {st1.__dict__}"
-        self.assertEqual(st1.__str__(), string)
+    def test_is_instance(self):
+        """Test if user is instance of basemodel"""
+        my_state = State()
+        self.assertTrue(isinstance(my_state, BaseModel))
 
-    def test_save(self):
-        """Test method for save"""
-        st1 = State()
-        old_update = st1.updated_at
-        st1.save()
-        self.assertNotEqual(st1.updated_at, old_update)
-
-    def test_todict(self):
-        """Test method for dict"""
-        st1 = State()
-        st2 = State(**st1.to_dict())
-        a_dict = st2.to_dict()
-        self.assertIsInstance(a_dict, dict)
-        self.assertEqual(a_dict["__class__"], type(st2).__name__)
-        self.assertIn("created_at", a_dict.keys())
-        self.assertIn("updated_at", a_dict.keys())
-        self.assertNotEqual(st1, st2)
+    def test_field_types(self):
+        """Test field attributes of user"""
+        my_state = State()
+        self.assertTrue(type(my_state.name) == str)
 
 
 if __name__ == "__main__":

@@ -1,21 +1,13 @@
 #!/usr/bin/python3
-"""defines one class, Review() which sub-classes the BaseModel() class.
+"""
+This is review class that represents new reviews
 """
 from models.base_model import BaseModel
 
 
 class Review(BaseModel):
-    """A review of a place/house.
+    """Review subclass that inherits from BaseModel"""
 
-    It represents a review posted by the users
-    of the application about a place/house.
-
-    Attributes:
-        text(str)
-        id(str)
-        place_id(str)
-    """
-
-    text = ""
-    id = ""
     place_id = ""
+    user_id = ""
+    text = ""

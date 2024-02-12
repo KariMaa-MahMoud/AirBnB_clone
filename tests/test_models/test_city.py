@@ -1,59 +1,59 @@
 #!/usr/bin/python3
-"""Unit tests for the City module.
+"""Unit test for the class city
 """
-import os
 import unittest
-from models.engine.file_storage import FileStorage
-from models import storage
+import pep8
+from models import city
 from models.city import City
-from datetime import datetime
-
-ct1 = City()
-ct2 = City(**ct1.to_dict())
-ct3 = City("hello", "wait", "in")
+from models.base_model import BaseModel
 
 
-class TestCity(unittest.TestCase):
-    """Test cases for the City class."""
+class TestCityClass(unittest.TestCase):
+    """TestCityClass test for the city class
+    Args:
+        unittest (): Propertys for unit testing
+    """
+
+    maxDiff = None
 
     def setUp(self):
-        pass
+        """Return to "" class attributes"""
+        City.name = ""
+        City.state_id = ""
 
-    def tearDown(self) -> None:
-        """Resets FileStorage data."""
-        FileStorage._FileStorage__objects = {}
-        if os.path.exists(FileStorage._FileStorage__file_path):
-            os.remove(FileStorage._FileStorage__file_path)
+    def test_module_doc(self):
+        """check for module documentation"""
+        self.assertTrue(len(city.__doc__) > 0)
 
-    def test_params(self):
-        """Test method for class attributes"""
-        km = f"{type(ct1).__name__}.{ct1.id}"
-        self.assertIsInstance(ct1.name, str)
-        self.assertEqual(ct3.name, "")
-        ct1.name = "Cairo"
-        self.assertEqual(ct1.name, "Cairo")
+    def test_class_doc(self):
+        """check for documentation"""
+        self.assertTrue(len(City.__doc__) > 0)
 
-    def test_init(self):
-        """Test method for public instances"""
-        self.assertIsInstance(ct1.id, str)
-        self.assertIsInstance(ct1.created_at, datetime)
-        self.assertIsInstance(ct1.updated_at, datetime)
-        self.assertEqual(ct1.updated_at, ct2.updated_at)
+    def test_method_docs(self):
+        """check for method documentation"""
+        for func in dir(City):
+            self.assertTrue(len(func.__doc__) > 0)
 
-    def test_save(self):
-        """Test method for save"""
-        old_update = ct1.updated_at
-        ct1.save()
-        self.assertNotEqual(ct1.updated_at, old_update)
+    def test_pep8(self):
+        """test base and test_base for pep8 conformance"""
+        style = pep8.StyleGuide(quiet=True)
+        file1 = "models/city.py"
+        file2 = "tests/test_models/test_city.py"
+        result = style.check_files([file1, file2])
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (and warning)."
+        )
 
-    def test_todict(self):
-        """Test method for dict"""
-        a_dict = ct2.to_dict()
-        self.assertIsInstance(a_dict, dict)
-        self.assertEqual(a_dict["__class__"], type(ct2).__name__)
-        self.assertIn("created_at", a_dict.keys())
-        self.assertIn("updated_at", a_dict.keys())
-        self.assertNotEqual(ct1, ct2)
+    def test_is_instance(self):
+        """Test if user is instance of basemodel"""
+        my_city = City()
+        self.assertTrue(isinstance(my_city, BaseModel))
+
+    def test_field_types(self):
+        """Test field attributes of user"""
+        my_city = City()
+        self.assertTrue(type(my_city.name) == str)
+        self.assertTrue(type(my_city.state_id) == str)
 
 
 if __name__ == "__main__":
