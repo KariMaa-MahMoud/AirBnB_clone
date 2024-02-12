@@ -12,10 +12,10 @@ class Review(BaseModel):
 
     Attributes:
         text(str)
-        user_id(str)
+        id(str)
         place_id(str)
     """
 
     text = ""
-    user_id = ""
+    id = ""
     place_id = ""

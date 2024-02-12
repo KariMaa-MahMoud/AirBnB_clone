@@ -37,7 +37,7 @@ class FileStorage:
         serializes __objects to the JSON file
         (path: __file_path)
         """
-        with open(self.__file_path, "w") as f:
+        with open(self.__file_path, "w+") as f:
             json.dump({k: v.to_dict() for k, v in self.__objects.items()}, f, indent=4)
 
     def reload(self):
@@ -50,6 +50,6 @@ class FileStorage:
                 data = json.loads(f.read())
                 for value in data.values():
                     cls = value["__class__"]
-                    self.new(eval(cls)(**value))
+                self.new(eval(cls)(**value))
         except Exception:
             pass

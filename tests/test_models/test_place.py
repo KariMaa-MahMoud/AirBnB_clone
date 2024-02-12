@@ -8,5 +8,75 @@ from models.place import Place
 from models import storage
 from datetime import datetime
 
+
+class TestPlace(unittest.TestCase):
+    """Test cases for the `Place` class."""
+
+    def setUp(self):
+        pass
+
+    def tearDown(self) -> None:
+        """Resets FileStorage data."""
+        FileStorage._FileStorage__objects = {}
+        if os.path.exists(FileStorage._FileStorage__file_path):
+            os.remove(FileStorage._FileStorage__file_path)
+
+    def test_params(self):
+        """Test method for class attributes"""
+
+        plc1 = Place()
+        plc3 = Place("hello", "wait", "in")
+        km = f"{type(plc1).__name__}.{plc1.id}"
+        self.assertIsInstance(plc1.name, str)
+        self.assertIn(km, storage.all())
+        self.assertEqual(plc3.name, "")
+
+        self.assertIsInstance(plc1.name, str)
+        self.assertIsInstance(plc1.user_id, str)
+        self.assertIsInstance(plc1.city_id, str)
+        self.assertIsInstance(plc1.description, str)
+        self.assertIsInstance(plc1.number_bathrooms, int)
+        self.assertIsInstance(plc1.number_rooms, int)
+        self.assertIsInstance(plc1.price_by_night, int)
+        self.assertIsInstance(plc1.max_guest, int)
+        self.assertIsInstance(plc1.longitude, float)
+        self.assertIsInstance(plc1.latitude, float)
+        self.assertIsInstance(plc1.amenity_ids, list)
+
+    def test_init(self):
+        """Test method for public instances"""
+
+        plc1 = Place()
+        plc2 = Place(**plc1.to_dict())
+        self.assertIsInstance(plc1.id, str)
+        self.assertIsInstance(plc1.created_at, datetime)
+        self.assertIsInstance(plc1.updated_at, datetime)
+        self.assertEqual(plc1.updated_at, plc2.updated_at)
+
+    def test_str(self):
+        """Test method for str representation"""
+        plc1 = Place()
+        string = f"[{type(plc1).__name__}] ({plc1.id}) {plc1.__dict__}"
+        self.assertEqual(plc1.__str__(), string)
+
+    def test_save(self):
+        """Test method for save"""
+        plc1 = Place()
+        old_update = plc1.updated_at
+        plc1.save()
+        self.assertNotEqual(plc1.updated_at, old_update)
+
+    def test_todict(self):
+        """Test method for dict"""
+        plc1 = Place()
+        plc2 = Place(**plc1.to_dict())
+        a_dict = plc2.to_dict()
+        self.assertIsInstance(a_dict, dict)
+        self.assertEqual(a_dict["__class__"], type(plc2).__name__)
+        self.assertIn("created_at", a_dict.keys())
+        self.assertIn("updated_at", a_dict.keys())
+        self.assertNotEqual(plc1, plc2)
+
+
 if __name__ == "__main__":
     unittest.main()

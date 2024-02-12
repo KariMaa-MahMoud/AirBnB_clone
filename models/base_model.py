@@ -10,15 +10,15 @@ import models
 
 
 class BaseModel:
-    """BaseModel for all the classes in the AirBnb console project
+    """BaseModel defines all common attributes/methods for other classes:
 
     Arttributes:
-        unique_id: handles unique user identity
+        id: handles unique user identity
         created_at: assigns current datetime
         updated_at: updates current datetime
 
     Methods:
-        __str__: prints the class name, unique_id, and creates dictionary
+        __str__: prints the class name, id, and creates dictionary
         representations of the input values
         save(self): updates instance arttributes with current datetime
         to_dict(self): returns the dictionary values of the instance obj
@@ -36,7 +36,7 @@ class BaseModel:
         """
         Date_Time_Format = "%Y-%m-%dT%H:%M:%S.%f"
         if not kwargs:
-            self.unique_id = str(uuid4())
+            self.id = str(uuid4())
             self.created_at = datetime.utcnow()
             self.updated_at = datetime.utcnow()
             models.storage.new(self)
@@ -44,7 +44,7 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key in ("updated_at", "created_at"):
                     self.__dict__[key] = datetime.strptime(value, Date_Time_Format)
-                elif key[0] == "unique_id":
+                elif key[0] == "id":
                     self.__dict__[key] = str(value)
                 else:
                     self.__dict__[key] = value
@@ -53,9 +53,7 @@ class BaseModel:
         """
         Returns string representation of the class
         """
-        return "[{}] ({}) {}".format(
-            self.__class__.__name__, self.unique_id, self.__dict__
-        )
+        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):
         """

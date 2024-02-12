@@ -10,7 +10,7 @@ class Place(BaseModel):
 
     Attributes:
         name(str)
-        user_id(str)
+        id(str)
         city_id(str)
         description(str)
         number_bathrooms(int)
@@ -23,7 +23,7 @@ class Place(BaseModel):
     """
 
     name = ""
-    user_id = ""
+    id = ""
     city_id = ""
     description = ""
     number_rooms = 0
