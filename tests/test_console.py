@@ -9,19 +9,21 @@ import pycodestyle
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 
+file_storage = FileStorage()
+
 
 class TestConsole(unittest.TestCase):
     """TestHBNBCommand class"""
 
     def setUp(self):
         """Set up test cases"""
-        self.storage = FileStorage()
-        self.storage.reload()
-        self.storage._FileStorage__objects = {}
+
+        file_storage.reload()
+        file_storage.__objects = {}
 
     def tearDown(self):
         """Clean up after test cases"""
-        self.storage._FileStorage__objects = {}
+        file_storage.__objects = {}
 
     def test_module_docstring(self):
         """Test that the module has a docstring"""
@@ -87,7 +89,7 @@ class TestConsole(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as f:
             console.HBNBCommand().onecmd("create BaseModel")
             output = f.getvalue().strip()
-            all_objs = self.storage.all()
+            all_objs = file_storage.all()
             key = f"BaseModel.{output}"
             self.assertIn(key, all_objs.keys())
 
@@ -144,7 +146,7 @@ class TestConsole(unittest.TestCase):
             output = f.getvalue().strip()
             self.assertEqual(output, "")
 
-        all_objs = self.storage.all()
+        all_objs = file_storage.all()
         key = f"BaseModel.{my_model.id}"
         self.assertNotIn(key, all_objs.keys())
 
@@ -218,7 +220,7 @@ class TestConsole(unittest.TestCase):
             output = f.getvalue().strip()
             self.assertEqual(output, "")
 
-        all_objs = self.storage.all()
+        all_objs = file_storage.all()
         key = f"BaseModel.{my_model.id}"
         updated_obj = all_objs[key]
         self.assertEqual(updated_obj.name, "Khaled")
