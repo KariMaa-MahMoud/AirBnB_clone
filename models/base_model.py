@@ -1,10 +1,8 @@
 #!/usr/bin/python3
 """Defines the BaseModel class."""
-from models.engine.file_storage import FileStorage
+from models import storage
 from uuid import uuid4
 from datetime import datetime
-
-storage = FileStorage()
 
 
 class BaseModel:
