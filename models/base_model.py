@@ -1,8 +1,12 @@
 #!/usr/bin/python3
+
 """Defines the BaseModel class."""
-import models
+
+from models.engine.file_storage import FileStorage
 from uuid import uuid4
 from datetime import datetime
+
+models.storage = FileStorage()
 
 
 class BaseModel:
@@ -15,14 +19,14 @@ class BaseModel:
             *args (any): Unused.
             **kwargs (dict): Key/value pairs of attributes.
         """
-        tform = "%Y-%m-%dT%H:%M:%S.%f"
+        time_form = "%Y-%m-%dT%H:%M:%S.%f"
         self.id = str(uuid4())
         self.created_at = datetime.today()
         self.updated_at = datetime.today()
         if len(kwargs) != 0:
             for k, v in kwargs.items():
                 if k == "created_at" or k == "updated_at":
-                    self.__dict__[k] = datetime.strptime(v, tform)
+                    self.__dict__[k] = datetime.strptime(v, time_form)
                 else:
                     self.__dict__[k] = v
         else:
