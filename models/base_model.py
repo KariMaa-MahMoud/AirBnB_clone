@@ -6,7 +6,7 @@ from models.engine.file_storage import FileStorage
 from uuid import uuid4
 from datetime import datetime
 
-models.storage = FileStorage()
+storage = FileStorage()
 
 
 class BaseModel:
@@ -30,12 +30,12 @@ class BaseModel:
                 else:
                     self.__dict__[k] = v
         else:
-            models.storage.new(self)
+            storage.new(self)
 
     def save(self):
         """Update updated_at with the current datetime."""
         self.updated_at = datetime.today()
-        models.storage.save()
+        storage.save()
 
     def to_dict(self):
         """Return the dictionary of the BaseModel instance.
