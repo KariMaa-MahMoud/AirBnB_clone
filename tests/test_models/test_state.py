@@ -7,11 +7,13 @@ Unittest classes:
     TestState_to_dict
 """
 import os
-import models
+from models.engine.file_storage import FileStorage
 import unittest
 from datetime import datetime
 from time import sleep
 from models.state import State
+
+storage = FileStorage()
 
 
 class TestState_instantiation(unittest.TestCase):
@@ -21,7 +23,7 @@ class TestState_instantiation(unittest.TestCase):
         self.assertEqual(State, type(State()))
 
     def test_new_instance_stored_in_objects(self):
-        self.assertIn(State(), models.storage.all().values())
+        self.assertIn(State(), storage.all().values())
 
     def test_id_is_public_str(self):
         self.assertEqual(str, type(State().id))
