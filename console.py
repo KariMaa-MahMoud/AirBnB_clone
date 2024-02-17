@@ -3,7 +3,8 @@
 import cmd
 import re
 from shlex import split
-from models import storage
+import pep8
+from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -11,6 +12,8 @@ from models.city import City
 from models.place import Place
 from models.amenity import Amenity
 from models.review import Review
+
+storage = FileStorage()
 
 
 def parse(arg):
@@ -90,7 +93,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, arg):
         """Usage: show <class> <id> or <class>.show(<id>)
-        Display the string representation of a class instance of a given id.
+        Display the string representation of a class
+        instance of a given id.
         """
         argl = parse(arg)
         objdict = storage.all()

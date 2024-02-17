@@ -7,11 +7,13 @@ Unittest classes:
     TestPlace_to_dict
 """
 import os
-import models
+from models.engine.file_storage import FileStorage
 import unittest
 from datetime import datetime
 from time import sleep
 from models.place import Place
+
+storage = FileStorage()
 
 
 class TestPlace_instantiation(unittest.TestCase):
@@ -21,7 +23,7 @@ class TestPlace_instantiation(unittest.TestCase):
         self.assertEqual(Place, type(Place()))
 
     def test_new_instance_stored_in_objects(self):
-        self.assertIn(Place(), models.storage.all().values())
+        self.assertIn(Place(), storage.all().values())
 
     def test_id_is_public_str(self):
         self.assertEqual(str, type(Place().id))
