@@ -1,3 +1,7 @@
+h2 {
+  font-size: 16px;
+}
+
 h3 {
   font-weight: 600;
   font-size: 14px;
@@ -12,10 +16,14 @@ h4 {
 }
 div.locations,
 div.amenities {
-  padding: 0 20px;
+  padding: 0 10px;
   height: 100%;
   width: 25%;
-  margin-left: 20px;
+  margin-left: 10px;
+}
+div.locations:hover .popover,
+div.amenities:hover .popover {
+  display: block;
 }
 section.filters {
   background-color: white;
@@ -25,6 +33,50 @@ section.filters {
   border-radius: 4px;
   align-items: center;
   display: flex;
+}
+h3.filter-title {
+  font-weight: 600;
+  margin: 10px 0px 0px 0px;
+}
+
+h4.filter-description {
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+li {
+  line-height: 25px;
+}
+
+li.popover-item {
+  margin-bottom: 20px;
+}
+
+ul.popover {
+  background-color: #fafafa;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  display: none;
+  margin: 24px -11px 0px -21px;
+  padding: 20px 30px;
+  z-index: 999999999999999999;
+}
+
+ul.popover-aligned {
+  padding-left: 50px;
+}
+
+ul.popover-items {
+  padding-left: 15px;
+}
+
+h2.popover-state {
+  margin: 0px;
 }
 button {
   font-size: 18px;
