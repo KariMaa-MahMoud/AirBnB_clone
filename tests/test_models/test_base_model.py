@@ -1,9 +1,7 @@
 #!/usr/bin/python3
 """Unittest module for the BaseModel Class."""
 
-from models import storage
 from models.base_model import BaseModel
-from models.engine.file_storage import FileStorage
 from datetime import datetime
 import json
 import os
@@ -25,7 +23,8 @@ class TestBaseModel(unittest.TestCase):
         """Tears down test methods."""
         self.resetStorage()
         pass
-
+        
+from models.engine.file_storage import FileStorage
     def resetStorage(self):
         """Resets FileStorage data."""
         FileStorage._FileStorage__objects = {}
@@ -54,7 +53,8 @@ class TestBaseModel(unittest.TestCase):
         args = [i for i in range(1000)]
         b = BaseModel(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
         b = BaseModel(*args)
-
+        
+from models import storage
     def test_3_attributes(self):
         """Tests attributes value for instance of a BaseModel class."""
 
@@ -157,7 +157,8 @@ class TestBaseModel(unittest.TestCase):
              "float": 3.14}
         o = BaseModel(**d)
         self.assertEqual(o.to_dict(), d)
-
+        
+from models.engine.file_storage import FileStorage
     def test_5_save(self):
         """Tests that storage.save() is called from save()."""
         self.resetStorage()
