@@ -7,9 +7,7 @@ import time
 from models.user import User
 import re
 import json
-from models.engine.file_storage import FileStorage
 import os
-from models import storage
 from models.base_model import BaseModel
 
 
@@ -25,7 +23,8 @@ class TestUser(unittest.TestCase):
         """Tears down test methods."""
         self.resetStorage()
         pass
-
+        
+from models.engine.file_storage import FileStorage
     def resetStorage(self):
         """Resets FileStorage data."""
         FileStorage._FileStorage__objects = {}
@@ -39,7 +38,8 @@ class TestUser(unittest.TestCase):
         self.assertEqual(str(type(b)), "<class 'models.user.User'>")
         self.assertIsInstance(b, User)
         self.assertTrue(issubclass(type(b), BaseModel))
-
+        
+from models import storage
     def test_8_attributes(self):
         """Tests the attributes of User class."""
         attributes = storage.attributes()["User"]
