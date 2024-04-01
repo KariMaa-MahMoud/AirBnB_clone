@@ -39,9 +39,8 @@ class HBNBCommand(cmd.Cmd):
     Attributes:
         prompt (str): The command prompt.
     """
-
     prompt = "(hbnb) "
-    __classes = {"BaseModel", "User", 
+    __classes = {"BaseModel", "User",
                  "State", "City", "Place", "Amenity", "Review"}
 
     def emptyline(self):
