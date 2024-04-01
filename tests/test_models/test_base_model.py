@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """Unittest module for the BaseModel Class."""
 
-from models.base_model import BaseModel
 from datetime import datetime
 import json
 import os
@@ -9,10 +8,11 @@ import re
 import time
 import unittest
 import uuid
-
+from models.base_model import BaseModel
+from models.engine.file_storage import FileStorage
+from models import storage
 
 class TestBaseModel(unittest.TestCase):
-
     """Test Cases for the BaseModel class."""
 
     def setUp(self):
@@ -23,8 +23,7 @@ class TestBaseModel(unittest.TestCase):
         """Tears down test methods."""
         self.resetStorage()
         pass
-        
-from models.engine.file_storage import FileStorage
+
     def resetStorage(self):
         """Resets FileStorage data."""
         FileStorage._FileStorage__objects = {}
@@ -37,7 +36,7 @@ from models.engine.file_storage import FileStorage
         b = BaseModel()
         self.assertEqual(str(type(b)), "<class 'models.base_model.BaseModel'>")
         self.assertIsInstance(b, BaseModel)
-        self.assertTrue(issubclass(type(b), BaseModel))
+        self.assertTrue(issubclass(type(b), BaseModel)
 
     def test_3_init_no_args(self):
         """Tests __init__ with no arguments."""
@@ -53,8 +52,7 @@ from models.engine.file_storage import FileStorage
         args = [i for i in range(1000)]
         b = BaseModel(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
         b = BaseModel(*args)
-        
-from models import storage
+
     def test_3_attributes(self):
         """Tests attributes value for instance of a BaseModel class."""
 
@@ -77,7 +75,7 @@ from models import storage
         """Tests for unique user ids."""
 
         nl = [BaseModel().id for i in range(1000)]
-        self.assertEqual(len(set(nl)), len(nl))
+        self.assertEqual(len(set(nl)), len(nl)
 
     def test_3_save(self):
         """Tests the public instance method save()."""
@@ -92,13 +90,13 @@ from models import storage
     def test_3_str(self):
         """Tests for __str__ method."""
         b = BaseModel()
-        rex = re.compile(r"^\[(.*)\] \((.*)\) (.*)$")
+        rex = re.compile(r"^$$(.*)$$ $(.*)$ (.*)$")
         res = rex.match(str(b))
         self.assertIsNotNone(res)
         self.assertEqual(res.group(1), "BaseModel")
         self.assertEqual(res.group(2), b.id)
         s = res.group(3)
-        s = re.sub(r"(datetime\.datetime\([^)]*\))", "'\\1'", s)
+        s = re.sub(r"(datetime\.datetime$[^)]*$)", "'\\1'", s)
         d = json.loads(s.replace("'", '"'))
         d2 = b.__dict__.copy()
         d2["created_at"] = repr(d2["created_at"])
@@ -157,8 +155,7 @@ from models import storage
              "float": 3.14}
         o = BaseModel(**d)
         self.assertEqual(o.to_dict(), d)
-        
-from models.engine.file_storage import FileStorage
+
     def test_5_save(self):
         """Tests that storage.save() is called from save()."""
         self.resetStorage()
@@ -184,11 +181,4 @@ from models.engine.file_storage import FileStorage
     def test_5_save_excess_args(self):
         """Tests save() with too many arguments."""
         self.resetStorage()
-        with self.assertRaises(TypeError) as e:
-            BaseModel.save(self, 98)
-        msg = "save() takes 1 positional argument but 2 were given"
-        self.assertEqual(str(e.exception), msg)
-
-
-if __name__ == '__main__':
-    unittest.main()
+        with self.assertRaises
