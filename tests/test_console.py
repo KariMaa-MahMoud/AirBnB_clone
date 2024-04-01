@@ -39,7 +39,7 @@ class TestHBNBCommand(unittest.TestCase):
             os.remove("file.json")
         self.resetStorage()
         
-from models.engine.file_storage import FileStorage
+    from models.engine.file_storage import FileStorage
     def resetStorage(self):
         """Resets FileStorage data."""
         FileStorage._FileStorage__objects = {}
