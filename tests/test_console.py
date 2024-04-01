@@ -2,7 +2,6 @@
 """Module for TestHBNBCommand class."""
 
 from console import HBNBCommand
-from models.engine.file_storage import FileStorage
 import unittest
 import datetime
 from unittest.mock import patch
@@ -39,7 +38,8 @@ class TestHBNBCommand(unittest.TestCase):
         if os.path.isfile("file.json"):
             os.remove("file.json")
         self.resetStorage()
-
+        
+from models.engine.file_storage import FileStorage
     def resetStorage(self):
         """Resets FileStorage data."""
         FileStorage._FileStorage__objects = {}
